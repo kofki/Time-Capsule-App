@@ -1,15 +1,14 @@
 import { View, Text, FlatList } from 'react-native';
-import { DUMMY_DATA } from '../../data/dummy';
 import MessageItem from './message-item';
 
-function MessageList(){
+function MessageList({data}){
     function renderItem({item}){
-        return <MessageItem id={item.id} title={item.title} description={item.description}/>
+        return <MessageItem id={item.id} title={item.title} message={item.message}/>
     }
     return (
         <View>
            <FlatList 
-           data={DUMMY_DATA} 
+           data={data._j} 
            keyExtractor={item=> item.id}  
            renderItem={renderItem}
            />

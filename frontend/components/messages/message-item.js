@@ -1,10 +1,10 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 
-function MessageItem({id, title, description}){
+function MessageItem({id, title, message}){
     return (
         <TouchableOpacity onPress={()=>{}}>
             <Text>{title}</Text>
-            <Text>{description}</Text>
+            <Text>{message}</Text>
         </TouchableOpacity>
     );
 }
