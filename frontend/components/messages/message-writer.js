@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { TextInput, StyleSheet, View, Button } from "react-native"
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from "@react-navigation/native";
 
 
 export const MessageWriter = () => {
@@ -13,7 +14,8 @@ export const MessageWriter = () => {
         console.log(a);
         return a
     }
-
+    
+    const navigation = useNavigation();
 
     function handleSubmit() {
         const sumbit = async() => {
@@ -33,6 +35,7 @@ export const MessageWriter = () => {
             });
             const data = await response.json();
             console.log(data);
+            navigation.jumpTo("Home");
             return; 
         }
         if (title.length <= 0 || message.length <= 0 || new Date() > date){
