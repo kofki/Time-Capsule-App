@@ -1,10 +1,19 @@
 import { useState } from "react"
 import { TextInput, StyleSheet, View, Button } from "react-native"
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 export const MessageWriter = () => {
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
+    const [date, setDate] = useState(new Date());
+    const getCurrentDate = () =>{
+        const d = new Date();
+        const a = d.toISOString().split('T')[0];
+        console.log(a);
+        return a
+    }
+
 
     function handleSubmit() {
         const sumbit = async() => {
@@ -17,8 +26,8 @@ export const MessageWriter = () => {
                 body: JSON.stringify({
                     title: title,
                     message: message,
-                    date_sent: '2024-12-24',
-                    date_received: '2024-12-24',
+                    date_sent: getCurrentDate(),
+                    date_received: date.toISOString().split('T')[0],
 
                 }),
             });
@@ -26,7 +35,7 @@ export const MessageWriter = () => {
             console.log(data);
             return; 
         }
-        if (title.length <= 0 || message.length <= 0){
+        if (title.length <= 0 || message.length <= 0 || new Date() > date){
             console.log("cannot send message, too short");
             return;
         }
@@ -36,16 +45,16 @@ export const MessageWriter = () => {
 
     return (
         <View>
-            <View>
+            <View style={styles.container}>
                 <TextInput 
-                    style={styles.title} 
+                    style={styles.title}
                     onChangeText={text=> setTitle(text)} 
                     value={title}
                     autoCapitalize="sentences"
                     defaultValue="Write a title for your message..."
                 />
             </View>
-            <View>
+            <View style={styles.container}>
                 <TextInput
                     multiline
                     numberOfLines={5}
@@ -56,6 +65,9 @@ export const MessageWriter = () => {
                     defaultValue="Write your message..."
                 />
             </View>
+            <View>
+                <DateTimePicker value={date} mode="date" onChange={(e, selectedDate) => setDate(selectedDate)}/>
+            </View>
             <Button onPress={handleSubmit} title="Submit"/>
 
         </View>
@@ -65,12 +77,14 @@ export const MessageWriter = () => {
 
 const styles = StyleSheet.create({
     title: {
-        padding: 10,
         borderWidth: 1,
-        height: 10,
+        height: 20,
     },
     message: {
         borderWidth: 1,
         height: 100
+    },
+    container: {
+        padding: 10
     },
 })
