@@ -8,12 +8,17 @@ export const HomeScreen = () => {
 
     useEffect(()=>{
         const fetchData = async() => {
-            const response = await fetch('http://192.168.1.110:8000/api/message/');
-            const json = await response.json()
-            return json;
+            try{
+                const response = await fetch('http://192.168.1.110:8000/api/message/');
+                const json = await response.json();
+                setData(json)
+            } catch (error){
+                console.error(error);
+            }
+            
           
         }
-        setData(fetchData());
+        fetchData()
     }, [])
 
     
