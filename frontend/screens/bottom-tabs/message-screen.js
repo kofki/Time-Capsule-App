@@ -1,25 +1,10 @@
-import MessageList from '../../components/messages/message-list'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState } from 'react';
+import { MessageWriter } from '../../components/messages/message-writer';
 
 export const MessageScreen = ()=> {
-    const [data, setData] = useState([])
-
-    useEffect(()=>{
-        const fetchData = async() => {
-            const response = await fetch('http://192.168.1.110:8000/api/message/');
-            const json = await response.json()
-            return json;
-          
-        }
-        setData(fetchData());
-    }, [])
-
-    
-    return (
+    return(
         <SafeAreaView>
-            <MessageList data={data}/>
+            <MessageWriter/>
         </SafeAreaView>
-        
     );
 }

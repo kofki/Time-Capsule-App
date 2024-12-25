@@ -8,7 +8,7 @@ function MessageList({data}){
     return (
         <View>
            <FlatList 
-           data={data._j} 
+           data={data} 
            keyExtractor={item=> item.id}  
            renderItem={renderItem}
            />
