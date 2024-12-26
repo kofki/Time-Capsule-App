@@ -8,16 +8,23 @@ export const MessageWriter = () => {
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
     const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState(new Date());
     const getCurrentDate = () =>{
         const d = new Date();
-        const a = d.toISOString().split('T')[0];
-        console.log(a);
-        return a
+        return d
     }
     
     const navigation = useNavigation();
 
     function handleSubmit() {
+        const combinedDateTime = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            time.getHours(),
+            time.getMinutes(),
+            time.getSeconds()
+        );
         const sumbit = async() => {
             const response = await fetch('http://192.168.1.110:8000/api/message/', {
                 method: 'POST',
@@ -29,7 +36,7 @@ export const MessageWriter = () => {
                     title: title,
                     message: message,
                     date_sent: getCurrentDate(),
-                    date_received: date.toISOString().split('T')[0],
+                    date_received: combinedDateTime.toISOString(),
 
                 }),
             });
@@ -38,8 +45,12 @@ export const MessageWriter = () => {
             navigation.jumpTo("Home");
             return; 
         }
-        if (title.length <= 0 || message.length <= 0 || new Date() > date){
+        if (title.length <= 0 || message.length <= 0){
             console.log("cannot send message, too short");
+            return;
+        }
+        if (new Date() > combinedDateTime){
+            console.log("date and time is in past");
             return;
         }
         sumbit();
@@ -69,7 +80,8 @@ export const MessageWriter = () => {
                 />
             </View>
             <View>
-                <DateTimePicker value={date} mode="date" onChange={(e, selectedDate) => setDate(selectedDate)}/>
+                <DateTimePicker value={date} mode="date" onChange={(e, selectedDate) => {setDate(selectedDate)}}/>
+                <DateTimePicker value={time} mode="time" onChange={(e, selectedTime) =>{setTime(selectedTime)}}/>
             </View>
             <Button onPress={handleSubmit} title="Submit"/>
 
