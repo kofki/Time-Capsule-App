@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { TextInput, StyleSheet, View, Button, ScrollView } from "react-native"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from "@react-navigation/native";
 import * as Notifications from 'expo-notifications';
+import { useFocusEffect } from "@react-navigation/native";
 
 
 export const MessageWriter = () => {
@@ -10,12 +11,16 @@ export const MessageWriter = () => {
     const [message, setMessage] = useState("");
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
-    useEffect(()=>{
-        setTitle("");
-        setMessage("");
-        setDate(new Date());
-        setTime(new Date());
-    }, []);
+    useFocusEffect(
+        React.useCallback(()=>{
+            return () =>{
+                setTitle("");
+                setMessage("");
+                setDate(new Date());
+                setTime(new Date());
+            };
+        }, [])
+    );
     const getCurrentDate = () =>{
         const d = new Date();
         return d
