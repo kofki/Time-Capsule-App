@@ -28,7 +28,7 @@ export const HomeScreen = () => {
     
     return (
         <SafeAreaView>
-            <MessageList data={data}/>
+            <MessageList data={data.slice().reverse()}/>
         </SafeAreaView>
         
     );

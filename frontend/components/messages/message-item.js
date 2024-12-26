@@ -1,10 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import {View, Text, TouchableOpacity} from 'react-native';
 
-function MessageItem({id, title, message}){
+function MessageItem({ data }){
+    const date = new Date(data.date_sent);
+    const navigation = useNavigation();
     return (
-        <TouchableOpacity onPress={()=>{}}>
-            <Text>{title}</Text>
-            <Text>{message}</Text>
+        <TouchableOpacity onPress={()=>{navigation.navigate("MessageSelected", {data: data})}}>
+            <Text>{data.title}</Text>
+            <Text>Date Sent: {date.toDateString()}</Text>
         </TouchableOpacity>
     );
 }

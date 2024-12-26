@@ -3,7 +3,7 @@ import MessageItem from './message-item';
 
 function MessageList({data}){
     function renderItem({item}){
-        return <MessageItem id={item.id} title={item.title} message={item.message}/>
+        return <MessageItem data={item}/>
     }
     return (
         <View>
