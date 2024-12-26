@@ -25,47 +25,8 @@ export default function App() {
       if (status !== 'granted'){
         alert('No notification permissions')
       }
-
-      const token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log('Expo Push Token: ', token);
     };
-
     registerForPushNotifications();
-
-
-    const scheduleNotifications = async() => {
-      await Notifications.cancelAllScheduledNotificationsAsync();
-      
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "test 1",
-          body: "test 1 message",
-          sound: true,
-        },
-        trigger: {
-          seconds: 1000,
-        }
-      });
-    };
-
-    scheduleNotifications();
-    
-    const notificationListener = Notifications.addNotificationReceivedListener(
-      notification => {
-        console.log("notification received: ", notification);
-      }
-    );
-
-    const responseListener = Notifications.addNotificationResponseReceivedListener(
-      response => {
-        console.log("Notification interaction: ", response);
-      }
-    );
-
-    return () => {
-      notificationListener.remove();
-      responseListener.remove();
-    };
   }, []);
 
   return (

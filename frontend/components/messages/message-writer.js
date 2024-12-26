@@ -2,6 +2,7 @@ import { useState } from "react"
 import { TextInput, StyleSheet, View, Button } from "react-native"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from "@react-navigation/native";
+import * as Notifications from 'expo-notifications';
 
 
 export const MessageWriter = () => {
@@ -41,7 +42,19 @@ export const MessageWriter = () => {
                 }),
             });
             const data = await response.json();
-            console.log(data);
+            const scheduleNotifications = async() => {
+                await Notifications.scheduleNotificationAsync({
+                    content: {
+                        title: "Your Time Capsule Has Arrived!",
+                        body: "Enter the Time Capsule App to see your message from the past!",
+                    },
+                    trigger: {
+                        type: "date",
+                        date: combinedDateTime
+                    }
+                });
+            }
+            scheduleNotifications();
             navigation.jumpTo("Home");
             return; 
         }
