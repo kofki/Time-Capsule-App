@@ -1,59 +1,67 @@
 import React, { useState } from "react"
-import { TextInput, StyleSheet, View, Button, ScrollView } from "react-native"
+import { TextInput, StyleSheet, View, Button, ScrollView, Text } from "react-native"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from "@react-navigation/native";
 import * as Notifications from 'expo-notifications';
 import { useFocusEffect } from "@react-navigation/native";
+import { Dropdown } from "./dropdown";
 
 
 export const MessageWriter = ({emotion}) => {
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
-    const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState(new Date());
+    const [years, setYears] = useState(0);
+    const [months, setMonths] = useState(0);
+
     useFocusEffect(
         React.useCallback(()=>{
             return () =>{
                 setTitle("");
                 setMessage("");
-                setDate(new Date());
-                setTime(new Date());
+                setYears(0);
+                setMonths(0);
             };
         }, [])
     );
-    const getCurrentDate = () =>{
-        const d = new Date();
-        return d
+
+    const makeDict = (N) => {
+        let dict = new Object();
+        for (let i = 0; i < N; i++){
+            dict[i] = i
+        }
+        return dict;
     }
     
     const navigation = useNavigation();
 
     function handleSubmit() {
-        const combinedDateTime = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            time.getHours(),
-            time.getMinutes(),
-            time.getSeconds()
-        );
+        const combinedDateTime = () => {
+            let date = new Date()
+            date.setFullYear(date.getFullYear()+years);
+            date.setMonth(date.getMonth()+months);
+            return date;
+        };
         const sumbit = async() => {
-            const response = await fetch('http://192.168.1.120:8000/api/message/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            try{
+                const response = await fetch('http://192.168.1.120:8000/api/message/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
 
-                },
-                body: JSON.stringify({
-                    emotion: emotion,
-                    title: title,
-                    message: message,
-                    date_sent: getCurrentDate(),
-                    date_received: combinedDateTime.toISOString(),
+                    },
+                    body: JSON.stringify({
+                        emotion: emotion,
+                        title: title,
+                        message: message,
+                        date_sent: new Date(),
+                        date_received: combinedDateTime().toISOString(),
 
-                }),
-            });
-            const data = await response.json();
+                    }),
+                });
+                const data = await response.json();
+            } catch(e){
+                console.error(e);
+            }
             const scheduleNotifications = async() => {
                 await Notifications.scheduleNotificationAsync({
                     content: {
@@ -62,7 +70,7 @@ export const MessageWriter = ({emotion}) => {
                     },
                     trigger: {
                         type: "date",
-                        date: combinedDateTime
+                        date: combinedDateTime()
                     }
                 });
             }
@@ -71,11 +79,11 @@ export const MessageWriter = ({emotion}) => {
             return; 
         }
         if (title.length <= 0 || message.length <= 0){
-            console.log("cannot send message, too short");
+            alert("cannot send message, too short");
             return;
         }
-        if (new Date() > combinedDateTime){
-            console.log("date and time is in past");
+        if (months == 0 && years == 0){
+            alert("cannot have 0 months and years");
             return;
         }
         sumbit();
@@ -105,10 +113,10 @@ export const MessageWriter = ({emotion}) => {
                         defaultValue="Write your message..."
                     />
                 </View>
-                <View>
-                    <DateTimePicker value={date} mode="date" onChange={(e, selectedDate) => {setDate(selectedDate)}}/>
-                    <DateTimePicker value={time} mode="time" onChange={(e, selectedTime) =>{setTime(selectedTime)}}/>
-                </View>
+                <Text>Months from now on</Text>
+                <Dropdown data={makeDict(12)} selectedValue={String(months)} onChange={(val)=>{setMonths(Number(val))}}/>
+                <Text>Years from now on</Text>
+                <Dropdown data={makeDict(11)} selectedValue={String(years)} onChange={(val)=>{setYears(Number(val))}}/>
                 <Button onPress={handleSubmit} title="Submit"/>
             </View>
         </ScrollView>
