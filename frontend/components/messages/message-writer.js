@@ -6,7 +6,7 @@ import * as Notifications from 'expo-notifications';
 import { useFocusEffect } from "@react-navigation/native";
 
 
-export const MessageWriter = () => {
+export const MessageWriter = ({emotion}) => {
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
     const [date, setDate] = useState(new Date());
@@ -45,6 +45,7 @@ export const MessageWriter = () => {
 
                 },
                 body: JSON.stringify({
+                    emotion: emotion,
                     title: title,
                     message: message,
                     date_sent: getCurrentDate(),

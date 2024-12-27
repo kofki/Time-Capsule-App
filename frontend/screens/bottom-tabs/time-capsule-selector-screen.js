@@ -9,7 +9,7 @@ export const MessageTypeSelectorScreen = () => {
         <SafeAreaView>
             {emotions.map((emotion, i)=>{
                 return (
-                    <Button title={emotion} key={i} onPress={()=>navigation.navigate("MessageWriterScreen", {emotion: emotion})}/>
+                    <Button title={emotion} key={i} onPress={()=>{navigation.navigate("MessageWriterScreen", {emotion: emotion})}}/>
                 );
             })}
         </SafeAreaView>

@@ -3,12 +3,12 @@ import { MessageWriter } from '../../components/messages/message-writer';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native';
 
-export const MessageScreen = ()=> {
+export const MessageScreen = ({route})=> {
     const navigation = useNavigation()
     return(
         <SafeAreaView>
             <Button title="Go Back" onPress={()=>navigation.goBack()}/>
-            <MessageWriter/>
+            <MessageWriter emotion={route.params.emotion}/>
         </SafeAreaView>
     );
 }

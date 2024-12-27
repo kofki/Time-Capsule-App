@@ -11,7 +11,6 @@ export const HomeScreen = () => {
                 try{
                     const response = await fetch('http://192.168.1.120:8000/api/message/');
                     const json = await response.json();
-                    console.log(json);
                     setData(json)
                 } catch (error){
                     console.error(error);

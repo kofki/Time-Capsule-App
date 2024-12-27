@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Message(models.Model):
+
+    emotion = models.CharField(max_length=8)
     title = models.CharField(max_length=50)
     message = models.TextField(max_length=200)
     date_sent = models.DateTimeField()
