@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { CompleteMessage } from "../../components/messages/complete-message";
+import { CompleteMessage } from "../../components/feed/complete-message";
 
 export const MessageSelectedScreen = ({navigation, route}) => {
     return (
