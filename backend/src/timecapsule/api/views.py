@@ -5,4 +5,4 @@ from .serializers import MessageModelSerializer
 class MessagesViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageModelSerializer
-    
+

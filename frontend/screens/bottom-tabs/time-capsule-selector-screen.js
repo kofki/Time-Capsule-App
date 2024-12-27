@@ -4,10 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 
 export const MessageTypeSelectorScreen = () => {
     const navigation = useNavigation()
+    const emotions = ["joy", "anger", "surprise", "sadness"]
     return (
         <SafeAreaView>
-            <Button title="Select Message" onPress={()=>{navigation.navigate("MessageWriterScreen")}}/>
-            <Button title="Select Report" onPress={()=>{navigation.navigate("ReportWriterScreen")}}/>
+            {emotions.map((emotion, i)=>{
+                return (
+                    <Button title={emotion} key={i} onPress={()=>navigation.navigate("MessageWriterScreen", {emotion: emotion})}/>
+                );
+            })}
         </SafeAreaView>
     );
 };

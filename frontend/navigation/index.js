@@ -5,8 +5,6 @@ import { MessageScreen } from '../screens/bottom-tabs/message-screen';
 import { NavigationContainer, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { MessageSelectedScreen } from '../screens/stacks/message-selected-screen';
 import { MessageTypeSelectorScreen } from '../screens/bottom-tabs/time-capsule-selector-screen';
-import { WeeklyReportScreen } from '../screens/bottom-tabs/weekly-report-writer-screen';
-import { MessageWriter } from '../components/messages/message-writer';
 import { useCallback } from 'react';
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +35,6 @@ function MessageStack(){
         <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="MessageSelector" component={MessageTypeSelectorScreen}/>
             <Stack.Screen name="MessageWriterScreen" component={MessageScreen}/>
-            <Stack.Screen name="ReportWriterScreen" component={WeeklyReportScreen}/>
         </Stack.Navigator>
     );
 }
