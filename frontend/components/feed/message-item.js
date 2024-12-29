@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 function MessageItem({ data }){
     const date = new Date(data.date_sent);
