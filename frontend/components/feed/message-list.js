@@ -1,6 +1,7 @@
-import { View, Text, FlatList, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import MessageItem from './message-item';
 import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 
 const { width } = Dimensions.get('window')
@@ -40,6 +41,16 @@ function MessageList({data}){
     function renderItem({item}){
         return <MessageItem data={item}/>
     }
+    const navigation = useNavigation();
+
+    function handleWeekPress(capsule){
+        if (capsule){
+            navigation.navigate("MessageSelected", {data: capsule})
+        }
+        else{
+            navigation.jumpTo("MessageScreen")
+        }
+    }
 
 
     return (
@@ -49,12 +60,13 @@ function MessageList({data}){
                     const capsule = getCapsuleForDay(dayObject.date);
 
                     return (
-                        <View
+                        <TouchableOpacity
                             key={index}
                             style={[styles.dayBox, capsule && {backgroundColor: emotion_colors[capsule.emotion]}]}
+                            onPress={()=>handleWeekPress(capsule)}
                         >
                             <Text>{dayObject.day}</Text>
-                        </View>
+                        </TouchableOpacity>
                     );
                 })}
             </View>
